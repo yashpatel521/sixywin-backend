@@ -38,6 +38,7 @@ export const WINNING_MULTIPLIERS: Record<number, number> = {
   4: 50,
   3: 5,
   2: 2,
+  1: 1,
 };
 
 // Referral bonus constants

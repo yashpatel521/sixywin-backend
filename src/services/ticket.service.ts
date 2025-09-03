@@ -18,6 +18,7 @@ export class TicketService {
   static async getTicketsByUserId(userId: number, pageNo: number = 1) {
     const ticketRepo =
       AppDataSource.getRepository(Ticket).createQueryBuilder("ticket");
+    ticketRepo.leftJoinAndSelect("ticket.drawResult", "drawResult");
     ticketRepo.where("ticket.userId = :userId", { userId });
     ticketRepo.orderBy("ticket.createdAt", "DESC");
     ticketRepo.skip((pageNo - 1) * USER_MAX_TICKETS);
