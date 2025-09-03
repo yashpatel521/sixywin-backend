@@ -34,3 +34,6 @@ export const AVIATOR_TICKET_CREATION_FAILED =
 export const AVIATOR_HISTORY_NOT_FOUND = "Aviator history not found.";
 export const AVIATOR_NO_PENDING_TICKET = "No pending Aviator ticket found.";
 export const AVIATOR_ROUND_NOT_FOUND = "Aviator round not found.";
+
+// contact us errors
+export const CONTACT_US_CREATION_FAILED = "Failed to create contact request.";

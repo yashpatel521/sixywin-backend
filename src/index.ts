@@ -11,6 +11,7 @@ import userRoutes from "./routes/user.routes";
 import ticketRoutes from "./routes/ticket.routes";
 import aviatorRoutes from "./routes/avaitor.routes";
 import doubleTroubleRoutes from "./routes/doubleTrouble.routes";
+import contactUsRoutes from "./routes/contactus.routes";
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -39,6 +40,8 @@ app.use("/user", userRoutes);
 app.use("/ticket", ticketRoutes);
 app.use("/aviator", aviatorRoutes);
 app.use("/doubleTrouble", doubleTroubleRoutes);
+app.use("/contactus", contactUsRoutes);
+
 // -----------------------------
 // Global Error Handler
 // -----------------------------
