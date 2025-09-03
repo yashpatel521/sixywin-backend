@@ -7,6 +7,7 @@ import {
   MAX_NUMBER_DOUBLE_TROUBLE,
 } from "../utils/constant";
 import { Between } from "typeorm/find-options/operator/Between";
+import { UserService } from "./user.service";
 
 export class DoubleTroubleDrawService {
   static drawRepo = AppDataSource.getRepository(DoubleTroubleDraw);
@@ -25,7 +26,6 @@ export class DoubleTroubleDrawService {
 
     // Map to track latest state per user
     const userUpdates = new Map<string, any>();
-    const savePromises: Promise<any>[] = [];
 
     for (const ticket of tickets) {
       ticket.drawResult = savedDraw;
@@ -70,12 +70,10 @@ export class DoubleTroubleDrawService {
           ticket.status = "loss";
       }
 
-      savePromises.push(DoubleTroubleService.saveTicket(ticket));
-      userUpdates.set(ticket.user.id.toString(), ticket.user); // store full user
+      await DoubleTroubleService.saveTicket(ticket);
+      await UserService.updateUser(ticket.user);
+      userUpdates.set(ticket.user.id.toString(), ticket.user);
     }
-
-    // Save all tickets in parallel
-    await Promise.all(savePromises);
 
     // Send one update per user with full user object
     for (const [userId, userObj] of userUpdates.entries()) {
