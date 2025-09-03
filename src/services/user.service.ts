@@ -22,17 +22,29 @@ export class UserService {
     googleId?: string,
     avatar?: string
   ) {
+    // add coins if referral is provided new user
+    let coins = 1000;
+    if (referralId) {
+      coins += REFERRAL_BONUS.REFERRED_BONUS;
+    }
     const user = this.userRepo.create({
       email,
       username,
       password,
       googleId,
       avatar,
+      coins,
     });
     const savedUser = await this.userRepo.save(user);
 
     // Handle referral if provided
     if (referralId) {
+      // add coins to referrer
+      const referrer = await this.findUserByReferralId(referralId);
+      if (referrer) {
+        referrer.coins += REFERRAL_BONUS.REFERRED_BONUS;
+        await this.updateUser(referrer);
+      }
       await this.createReferral(savedUser, referralId);
     }
 
