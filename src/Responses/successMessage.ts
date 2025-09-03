@@ -22,3 +22,6 @@ export const AVIATOR_TICKET_CREATED = "Aviator ticket created successfully.";
 export const AVIATOR_HISTORY_FETCHED = "Aviator history fetched successfully.";
 export const AVIATOR_TICKET_CASHED_OUT =
   "Aviator ticket cashed out successfully.";
+
+// contact us related success messages
+export const CONTACT_US_CREATED = "Contact request created successfully.";
