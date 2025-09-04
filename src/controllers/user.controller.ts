@@ -2,6 +2,7 @@ import {
   USER_REGISTERED,
   LOGIN_SUCCESS,
   GET_LEADERBOARD,
+  USER_UPDATED,
 } from "../Responses/successMessage";
 import {
   ALL_FIELDS_REQUIRED,
@@ -13,6 +14,7 @@ import {
   USER_NOT_AUTHENTICATED,
   GET_LEADERBOARD_FAILED,
   GOOGLE_AUTHENTICATION_FAILED,
+  USER_UPDATE_FAILED,
 } from "../Responses/errorMessage";
 import { UserService } from "../services/user.service";
 import { createJwtToken } from "../utils/common";
@@ -262,6 +264,29 @@ export class UserController {
           error: err,
         },
       };
+    }
+  }
+
+  static async update(req: Request, res: Response, next: NextFunction) {
+    try {
+      const user = req.user;
+      const { username, avatar, oldPassword, newPassword } = req.body;
+      if (!user) {
+        return ApiResponse.errorResponse(res, null, USER_NOT_AUTHENTICATED);
+      }
+      if (avatar) {
+        user.avatar = avatar;
+      }
+      if (username) {
+        user.username = username;
+      }
+      if (newPassword) {
+        user.password = newPassword;
+      }
+      const newUser = await UserService.updateUser(user);
+      return ApiResponse.successResponse(res, newUser, USER_UPDATED);
+    } catch (err) {
+      return ApiResponse.errorResponse(res, err, USER_UPDATE_FAILED);
     }
   }
 }

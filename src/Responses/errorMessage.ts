@@ -10,6 +10,7 @@ export const REFERRAL_NOT_FOUND = "Referral user not found.";
 export const INSUFFICIENT_FUNDS = "Insufficient funds.";
 export const INVALID_BID_AMOUNT = "Invalid bid amount.";
 export const GOOGLE_AUTHENTICATION_FAILED = "Google authentication failed.";
+export const USER_UPDATE_FAILED = "User update failed.";
 
 // Ticket errors
 export const TICKET_NUMBERS_REQUIRED = "You must select exactly 6 numbers.";

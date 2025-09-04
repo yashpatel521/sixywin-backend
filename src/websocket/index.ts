@@ -41,36 +41,41 @@ export function setupWebSocketServer(server: HTTPServer) {
             return;
           }
           // Handle the incoming message data
-          const verifyToken = async (token: string) => {
-            const data = jwt.verify(token, TOKEN_SECRET!) as JWT_DECODE;
-            const user = await UserService.findUserById(data.id);
-            return user;
-          };
-          data.payload.user = await verifyToken(data.token);
-          userConnections.set(data.payload.user.id.toString(), ws);
-          if (!data.payload.user) {
-            ws.send(
-              JSON.stringify({
-                type: "error",
-                message: "Invalid or missing token",
-                timestamp: new Date().toISOString(),
-              })
-            );
-            return;
+          if (data.token) {
+            const verifyToken = async (token: string) => {
+              const data = jwt.verify(token, TOKEN_SECRET!) as JWT_DECODE;
+              const user = await UserService.findUserById(data.id);
+              return user;
+            };
+            data.payload.user = await verifyToken(data.token);
+            userConnections.set(data.payload.user.id.toString(), ws);
+            if (!data.payload.user) {
+              ws.send(
+                JSON.stringify({
+                  type: "error",
+                  message: "Invalid or missing token",
+                  timestamp: new Date().toISOString(),
+                })
+              );
+              return;
+            }
           }
           switch (data.type) {
             case "addUserToConnections":
-              userConnections.set(String(data.payload.user.id), ws);
-              const updatedUser = {
-                type: "updatedUser_response",
-                requestId: data.requestId,
-                payload: {
-                  success: true,
-                  message: "User authenticated successfully",
-                  data: { user: data.payload.user },
-                },
-              };
-              return responseHandler(ws, updatedUser);
+              if (data.payload.user && data.payload.user.id) {
+                userConnections.set(String(data.payload.user.id), ws);
+                const updatedUser = {
+                  type: "updatedUser_response",
+                  requestId: data.requestId,
+                  payload: {
+                    success: true,
+                    message: "User authenticated successfully",
+                    data: { user: data.payload.user },
+                  },
+                };
+                return responseHandler(ws, updatedUser);
+              }
+              return;
             case "spinWheel":
               const spinResult = await UserController.spinWheel(
                 { ...data.payload, amount: data.payload.amount },
