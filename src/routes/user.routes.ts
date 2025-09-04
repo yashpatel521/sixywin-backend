@@ -21,5 +21,6 @@ router.post(
   validate.body(schemas.socialLogin),
   UserController.socialLogin
 );
+router.post("/update", Auth, UserController.update);
 
 export default router;

@@ -1,7 +1,7 @@
 // user related success messages
 export const USER_REGISTERED = "User registered successfully.";
 export const LOGIN_SUCCESS = "Login successful.";
-
+export const USER_UPDATED = "User updated successfully.";
 // ticket related success messages
 export const TICKET_SUBMITTED = "Ticket submitted successfully!";
 export const LATEST_DRAW = "Latest draw fetched successfully.";
